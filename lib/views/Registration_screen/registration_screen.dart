@@ -1,3 +1,4 @@
+import 'package:firebase_sample/controller/authentication_controller.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -12,7 +13,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   bool obscurePass = true;
   bool obscureConfirm = true;
@@ -31,10 +33,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 60),
               const Text(
                 "Create Account",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 30),
 
@@ -53,8 +52,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   if (value == null || value.isEmpty) {
                     return "Email is required";
                   }
-                  if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w]{2,4}$')
-                      .hasMatch(value)) {
+                  if (!RegExp(
+                    r'^[\w-.]+@([\w-]+\.)+[\w]{2,4}$',
+                  ).hasMatch(value)) {
                     return "Enter a valid email";
                   }
                   return null;
@@ -71,7 +71,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
-                        obscurePass ? Icons.visibility_off : Icons.visibility),
+                      obscurePass ? Icons.visibility_off : Icons.visibility,
+                    ),
                     onPressed: () {
                       setState(() => obscurePass = !obscurePass);
                     },
@@ -101,7 +102,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
-                        obscureConfirm ? Icons.visibility_off : Icons.visibility),
+                      obscureConfirm ? Icons.visibility_off : Icons.visibility,
+                    ),
                     onPressed: () {
                       setState(() => obscureConfirm = !obscureConfirm);
                     },
@@ -135,6 +137,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      AuthenticationController.authenticationFn(
+                        emailAddress: emailController.text.trim(),
+                        password: passwordController.text.trim(),
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text("Registration Successful"),
@@ -156,7 +162,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   onPressed: () {},
                   child: const Text("Already have an account? Login"),
                 ),
-              )
+              ),
             ],
           ),
         ),
