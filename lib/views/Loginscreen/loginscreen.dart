@@ -1,21 +1,21 @@
 import 'package:firebase_sample/controller/authentication_controller.dart';
+import 'package:firebase_sample/controller/login_screen_controller.dart';
+import 'package:firebase_sample/views/Registration_screen/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
 
   bool obscurePass = true;
   bool obscureConfirm = true;
@@ -23,7 +23,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -34,7 +33,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             children: [
               const SizedBox(height: 60),
               const Text(
-                "Create Account",
+                "Welcome Back",
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 30),
@@ -93,37 +92,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 20),
 
-              /// CONFIRM PASSWORD
-              TextFormField(
-                controller: confirmPasswordController,
-                obscureText: obscureConfirm,
-                decoration: InputDecoration(
-                  labelText: "Confirm Password",
-                  prefixIcon: const Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      obscureConfirm ? Icons.visibility_off : Icons.visibility,
-                    ),
-                    onPressed: () {
-                      setState(() => obscureConfirm = !obscureConfirm);
-                    },
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Confirm your password";
-                  }
-                  if (value != passwordController.text) {
-                    return "Passwords do not match";
-                  }
-                  return null;
-                },
-              ),
               const SizedBox(height: 30),
 
               /// REGISTER BUTTON
@@ -139,10 +108,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      context.read<AuthenticationController>().authenticationFn(
+                      context.read<LoginScreenController>().loginFn(
                         emailAddress: emailController.text.trim(),
                         password: passwordController.text.trim(),
-                        context: context
+                        context: context,
                       );
                       // ScaffoldMessenger.of(context).showSnackBar(
                       //   const SnackBar(
@@ -153,7 +122,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     }
                   },
                   child: const Text(
-                    "Register",
+                    "Login",
                     style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
                 ),
@@ -162,8 +131,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               const SizedBox(height: 20),
               Center(
                 child: TextButton(
-                  onPressed: () {},
-                  child: const Text("Already have an account? Login"),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RegistrationScreen(),
+                      ),
+                    );
+                  },
+                  child: const Text("Don't have an account? Register"),
                 ),
               ),
             ],
